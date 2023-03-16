@@ -1,5 +1,14 @@
 
 <x-app-layout>
+    @php
+        $request = Request::capture();
+        
+
+        $path = $request->path();
+        
+    @endphp
+    @if (!Str::contains($path, "Self"))
+        
     <div class="">
         <div class="relative mr-4">
             <form action="resultSearch"  method="GET">
@@ -17,9 +26,10 @@
         </div>
         <input type="submit" value="Search" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-5" >
     </form>
-    </div>
+</div>
 
-    
+@endif
+
 <div class="flex flex-col">
     <div class="overflow-x-auto ">
         <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -65,5 +75,6 @@
 
 </tbody>
 </table>
+{{ $results->links() }}
 <p>result</p>
     </x-app-layout>

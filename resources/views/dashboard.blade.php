@@ -1,7 +1,16 @@
 <x-app-layout>
+  @if (Auth()->user()->type==1)
+  <a href="result">result</a>
+  <br>
+  <a href="create/quiz">create quiz</a>
+  <br>
+  <a href="/create/question">create quistion</a>
+      <br>
+  @endif
   <a href="quizzes ">quiz</a>
   <br>
-  <a href="result">result</a>
+  <a href="result/Self">self result</a>
+  <br>
   <section class="text-gray-700 body-font">
     <div class="p-4 md:w-1/3">
       <div class="h-full border-2 border-gray-200 rounded-lg overflow-hidden">

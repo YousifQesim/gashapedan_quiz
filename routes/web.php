@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\ResultController;
 use App\Models\Quiz;
@@ -30,7 +31,12 @@ Route::get('/test/{id}', function ($id) {
 return ""; 
 });
 Route::get('/quizzes', [QuizController::class, 'index']);
+Route::post('quizzes', [QuizController::class, 'store']);
+Route::get('/create/quiz', [QuizController::class, 'create']);
+Route::get("/create/question", [QuestionController::class, 'create']);
+Route::post("question/store", [QuestionController::class, 'store']);
 Route::get('resultSearch', [ResultController::class, 'show']);
+Route::get('result/Self', [ResultController::class, 'showUser']);
 Route::get('/result', [ResultController::class, 'index']);
 Route::post('/stdAnswer', [quizController::class, "stdAnswer"]);
 Route::get('/quiz/{quiz}/show', [QuizController::class, 'show']);

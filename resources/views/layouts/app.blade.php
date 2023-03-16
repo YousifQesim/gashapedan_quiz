@@ -32,5 +32,15 @@
                 {{ $slot }}
             </main>
         </div>
+        @if (session()->has('success'))
+        <div id="messge_show"
+            class=" fixed left-1/2 top-4 p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400">
+            <span class="font-medium">Success alert!</span> {{ session('success') }}
+        </div>
+        
+        <script type="text/javascript">
+            $(messge_show).show().delay(3000).fadeOut();
+        </script>
+        @endif
     </body>
 </html>

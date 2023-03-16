@@ -8,6 +8,7 @@ use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\StudentAnswer;
 use Attribute;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
@@ -79,5 +80,40 @@ class QuizController extends Controller
     }else {
             return back()->with('stuAnswer', 'you did not answer all questions');
     }
+    }
+
+    public function create()
+    {
+if (Auth()->user()->type) {
+    return view("quizzes.create_quiz");
+    
+}
+else {
+    echo "sorry you are not teacher";
+ echo   '<br> <a href="/dashboard">home</a>';
+}
+
+
+    }
+    public function store()
+    {
+        $request = request()->validate( [
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        $quiz = new Quiz;
+        $quiz->user_id =auth()->user()->id;
+        $quiz->title = $request['title'];
+        $quiz->description = $request['description'];
+        $quiz->time_limit = 1;
+        $quiz->attempts_allowed = 1;
+        
+        $quiz->starts_at = "2023-03-11 18:55:50";
+        $quiz->ends_at = "2023-03-11 18:55:55";
+        $quiz->save();
+
+        return redirect("create/question");
+
     }
 }

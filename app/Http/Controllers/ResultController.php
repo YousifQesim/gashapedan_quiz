@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\QuizAttempt;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ResultController extends Controller
 {
@@ -13,10 +15,10 @@ class ResultController extends Controller
      */
     public function index()
     {
-       $results= QuizAttempt::all();
-       
+        $results = QuizAttempt::latest('id')->paginate(10);
+
+
         return view('result.index_result', compact('results'));
-        
     }
 
     /**
@@ -24,17 +26,32 @@ class ResultController extends Controller
      */
     public function show(Request $request)
     {
+
+        $searchQuery = request()->input('search');
+
+        $results = QuizAttempt::latest()->select('quiz_attempts.*')
+            ->join('quizzes', 'quizzes.id', '=', 'quiz_attempts.quiz_id')
+            ->join('users', 'users.id', '=', 'quiz_attempts.user_id')
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('quizzes.title', 'LIKE', '%' . $searchQuery . '%')
+                    ->orWhere('users.name', 'LIKE', '%' . $searchQuery . '%');
+            })
+            ->paginate(10)->withQueryString();
+        return view('result.index_result', compact('results'));
+    }
+    public function showUser(Request $request)
+    {
+
+        $id = auth()->user()->id;
         
-        $searchQuery=request(["search"][0]);
-      $results=  QuizAttempt::select('Quiz_attempts.*')
-        ->join('quizzes', 'quizzes.id', '=', 'quiz_attempts.quiz_id')
-        ->join('users', 'users.id', '=', 'quiz_attempts.user_id')
-        ->where(function ($query) use ($searchQuery) {
-            $query->where('quizzes.title', 'LIKE', '%' . $searchQuery . '%')
-                ->orWhere('users.name', 'LIKE', '%' . $searchQuery . '%');
-        })
-            ->get();
-    return view('result.index_result', compact('results'));
+
+        $results =  QuizAttempt::latest()->select('Quiz_attempts.*')
+            ->join('quizzes', 'quizzes.id', '=', 'quiz_attempts.quiz_id')
+            ->join('users', 'users.id', '=', 'quiz_attempts.user_id')
+            ->where(function ($query) use ($id) {
+                $query->where('users.id', '=', "$id");
+            })->paginate(10);
+        return view('result.index_result', compact('results'));
     }
 
     /**
