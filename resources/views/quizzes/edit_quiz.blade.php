@@ -30,10 +30,13 @@
             <div class="flex items-center">
                 <input type="radio" id="{{ $answer->id }}" name="A{{ $a }}" value="{{ $answer->id }}" class="mr-2">
                 <label  name="{{ $answer->id }}" for="{{ $answer->id }}">{{ ($answer->answer) }}</label>
-                
             </div>
             
             @endforeach
+
+
+                <a href="/edit/question/{{ $question->id }}">edit</a>
+            
             
         </div>
         

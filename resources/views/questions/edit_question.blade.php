@@ -1,41 +1,36 @@
 <x-app-layout>
 
     <div class="py-4 px-6">
-        <h2 class="text-lg font-medium text-gray-800 mb-1">Create a new question:</h2>
-        <form method="POST" action="{{ route('question.store') }}">
+        <h2 class="text-lg font-medium text-gray-800 mb-1">edit question:</h2>
+        <form method="POST" action="/question/store">
             @csrf
+            {{ $question->id }}
             <div class="mb-1">
-                <label for="quiz-id" class="block text-gray-700 font-medium mb-1">Quiz ID:</label>
-                <select id="quiz-id" name="quiz-id"
-                    class="w-full px-3 py-1 border rounded-lg text-gray-700 focus:outline-none focus:shadow-outline">
-                    @foreach ($quizzes as $quiz)
-                    <option value="{{ $quiz->id }}">{{ $quiz->title }}</option>
-                    @endforeach
+            <input hidden name="question-id" type="text" value="{{ $question->id }}" >
+            <input hidden type="text" name="quiz-id" value="{{ $question->quiz_id }}">
 
-                </select>
-                @error('quiz-id')
-                <p class="text-red-500 text-xs italic">{{ $message }}</p>
-                @enderror
+
             </div>
             <div class="mb-1">
                 <label for="question" class="block text-gray-700 font-medium mb-1">Question:</label>
-                <textarea id="question" name="question" rows="1"
-                    class="w-full px-3 py-1 border rounded-lg text-gray-700 focus:outline-none focus:shadow-outline"></textarea>
+                <input id="question" name="question" value="{{ $question->question }}"
+                    class="w-full px-3 py-1 border rounded-lg text-gray-700 focus:outline-none focus:shadow-outline">
                 @error('question')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
             </div>
             <div class="mb-1">
                 <label for="option1" class="block text-gray-700 font-medium mb-1">Option 1:</label>
-                <input type="text" id="option1" name="option1"
+                <input type="text" id="option1" name="option1" value="{{ $question->answers[0]->answer }}"
                     class="w-full px-3 py-1 border rounded-lg text-gray-700 focus:outline-none focus:shadow-outline">
                 @error('option1')
+
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                 @enderror
             </div>
             <div class="mb-1">
                 <label for="option2" class="block text-gray-700 font-medium mb-1">Option 2:</label>
-                <input type="text" id="option2" name="option2"
+                <input type="text" id="option2" name="option2" value="{{ $question->answers[1]->answer }}"
                     class="w-full px-3 py-1 border rounded-lg text-gray-700 focus:outline-none focus:shadow-outline">
                 @error('option2')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -43,7 +38,7 @@
             </div>
             <div class="mb-1">
                 <label for="option3" class="block text-gray-700 font-medium mb-1">Option 3:</label>
-                <input type="text" id="option3" name="option3"
+                <input type="text" id="option3" name="option3" value="{{ $question->answers[2]->answer }}"
                     class="w-full px-3 py-1 border rounded-lg text-gray-700 focus:outline-none focus:shadow-outline">
                 @error('option3')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -51,7 +46,7 @@
             </div>
             <div class="mb-1">
                 <label for="option4" class="block text-gray-700 font-medium mb-1">Option 4:</label>
-                <input type="text" id="option4" name="option4"
+                <input type="text" id="option4" name="option4" value="{{ $question->answers[3]->answer }}"
                     class="w-full px-3 py-1 border rounded-lg text-gray-700 focus:outline-none focus:shadow-outline">
                 @error('option4')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -59,12 +54,15 @@
             </div>
             <div class="mb-1">
                 <label for="answer" class="block text-gray-700 font-medium mb-1">Correct Answer:</label>
+
+                @if($question->answers[0]->is_correct ==1) select @endif
                 <select id="answer" name="answer"
                     class="w-full px-3 py-1 border rounded-lg text-gray-700 focus:outline-none focus:shadow-outline">
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                    <option value="option4">Option 4</option>
+                    <option @if($question->answers[0]->is_correct ==1) selected @endif value="option1">Option 1</option>
+                    <option selected @if($question->answers[1]->is_correct ==1) selected @endif value="option2">Option 2
+                    </option>
+                    <option @if($question->answers[2]->is_correct ==1) selected @endif value="option3">Option 3</option>
+                    <option @if($question->answers[3]->is_correct ==1) selected @endif value="option4">Option 4</option>
                 </select>
                 @error('answer')
                 <p class="text-red-500 text-xs italic">{{ $message }}</p>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\Question;
 use App\Models\Quiz;
 
 use App\Models\QuizAttempt;
@@ -23,9 +24,23 @@ class QuizController extends Controller
     }
     public function show(Quiz $quiz)
     {
-
+        $user = Auth::user();
+if($user->type){
+    return view('quizzes.edit_quiz', compact('quiz'));
+      
+}
         return view('quizzes.show_quiz', compact('quiz'));
     }
+
+  public function check()
+    {     $user = Auth::user();
+        $quiz = Quiz::where('user_id', "$user->id")->get();
+        
+        return view('quizzes.quizzes', compact('quiz'));
+    }
+
+ 
+
     public function stdAnswer()
     {
         $attributes = request();
@@ -78,7 +93,7 @@ class QuizController extends Controller
         
        return redirect("/home");
     }else {
-            return back()->with('stuAnswer', 'you did not answer all questions');
+            return back()->with('error', 'you did not answer all questions');
     }
     }
 
@@ -116,4 +131,5 @@ else {
         return redirect("create/question");
 
     }
+   
 }

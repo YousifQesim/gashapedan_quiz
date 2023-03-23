@@ -38,8 +38,28 @@
             <span class="font-medium">Success alert!</span> {{ session('success') }}
         </div>
         
+  
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript">
-            $(messge_show).show().delay(3000).fadeOut();
+      setTimeout(function() {
+    document.getElementById('messge_show').style.display = 'none';
+    }, 5000);
+        </script>
+        @endif
+        @if (session()->has('error'))
+        <div id="messge_show"
+            class=" fixed left-1/2 top-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400">
+            <span class="font-medium">error alert!</span> {{ session('error') }}
+        </div>
+        
+  
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript">
+      setTimeout(function() {
+    document.getElementById('messge_show').style.display = 'none';
+    }, 5000);
         </script>
         @endif
     </body>

@@ -28,13 +28,35 @@ class QuestionController extends Controller
             'option2' => 'required',
             'option3' => 'required',
             'option4' => 'required',
+            'question-id'=>''
         ]);
+        
+        
 
         // Create a new Answer model and set its attributes
+        if (isset($validatedData['question-id'])) {
+            $question = Question::findOrFail($validatedData['question-id']);
+
+            $question->question = $validatedData['question'];
+            $question->save();
+            
+            $answers = Answer::where('question_id', $validatedData['question-id'])->get();
+            for ($i = 1; $i < 5; $i++) { 
+                $answer= $answers[$i-1];
+                $answer->answer = $validatedData['option' . $i];
+                $answer->is_correct = (('option' . $i) == $validatedData['answer'] ? 1 : 0);
+                $answer->save();
+            }
+
+          return  redirect('quizzes/check');
+        }
+        
+
         $question=new Question();
         $question->quiz_id=$validatedData['quiz-id'];
         $question->question=$validatedData['question'];
         $question->save();
+        
         
         for ($i=1; $i <5 ; $i++) { 
             $answer = new Answer();
@@ -46,6 +68,15 @@ class QuestionController extends Controller
 
         return redirect("create/question")->with('success', 'question created successfully!');
 
+    }
+   
+    public function edit(Question $question)
+    {
+
+        $answers = $question->answers;
+
+
+        return view("questions.edit_question", compact('question', "answers"));
     }
  
 }

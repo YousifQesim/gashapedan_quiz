@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can  web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
@@ -27,19 +27,22 @@ Route::get('/home', function () {
 })->middleware(['auth', 'verified'])->name('home');
 
 Route::get('/test/{id}', function ($id) {
-    
-return ""; 
+
+    return "";
 });
 Route::get('/quizzes', [QuizController::class, 'index']);
+Route::get('/quizzes/check', [QuizController::class, 'check']);
 Route::post('quizzes', [QuizController::class, 'store']);
 Route::get('/create/quiz', [QuizController::class, 'create']);
 Route::get("/create/question", [QuestionController::class, 'create']);
-Route::post("question/store", [QuestionController::class, 'store']);
+Route::post("/question/store", [QuestionController::class, 'store'])->name('question.store');
+
 Route::get('resultSearch', [ResultController::class, 'show']);
 Route::get('result/Self', [ResultController::class, 'showUser']);
 Route::get('/result', [ResultController::class, 'index']);
 Route::post('/stdAnswer', [quizController::class, "stdAnswer"]);
 Route::get('/quiz/{quiz}/show', [QuizController::class, 'show']);
+Route::get('/edit/question/{question}', [QuestionController::class, 'edit']);
 
 
 

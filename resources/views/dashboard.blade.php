@@ -5,12 +5,17 @@
   <a href="create/quiz">create quiz</a>
   <br>
   <a href="/create/question">create quistion</a>
-      <br>
-  @endif
+  <br>
+  <a href="quizzes/check">quiz see</a>
+  <br>
+
+
+  @else
   <a href="quizzes ">quiz</a>
   <br>
   <a href="result/Self">self result</a>
   <br>
+  @endif
   <section class="text-gray-700 body-font">
     <div class="p-4 md:w-1/3">
       <div class="h-full border-2 border-gray-200 rounded-lg overflow-hidden">
