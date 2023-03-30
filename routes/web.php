@@ -26,10 +26,6 @@ Route::get('/home', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('home');
 
-Route::get('/test/{id}', function ($id) {
-
-    return "";
-});
 Route::get('/quizzes', [QuizController::class, 'index']);
 Route::get('/quizzes/check', [QuizController::class, 'check']);
 Route::post('quizzes', [QuizController::class, 'store']);
